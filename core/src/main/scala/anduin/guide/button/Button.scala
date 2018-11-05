@@ -9,11 +9,11 @@ import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
 // scalastyle:on underscore.import
 
-final case class ButtonT(
-  tpe: ButtonT.Tpe = ButtonT.Tpe.Button,
-  color: ButtonT.Color = ButtonT.Color.White,
-  size: ButtonT.Size = ButtonT.Size.Fix32,
-  style: ButtonT.Style = ButtonT.Style.Full,
+final case class Button(
+  tpe: Button.Tpe = Button.Tpe.Button,
+  color: Button.Color = Button.Color.White,
+  size: Button.Size = Button.Size.Fix32,
+  style: Button.Style = Button.Style.Full,
   isFullWidth: Boolean = false,
   isSelected: Boolean = false,
   isDisabled: Boolean = false,
@@ -22,11 +22,11 @@ final case class ButtonT(
   onClick: Callback = Callback.empty
 ) {
   def apply(children: VdomNode*): VdomElement = {
-    ButtonT.component(this)(children: _*)
+    Button.component(this)(children: _*)
   }
 }
 
-object ButtonT {
+object Button {
 
   private abstract class Tpe
   object Tpe {

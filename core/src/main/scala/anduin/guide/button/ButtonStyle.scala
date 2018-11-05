@@ -1,6 +1,6 @@
 package anduin.guide.button
 
-private[component] object ButtonStyleT {
+private[component] object ButtonStyle {
 
 
 
