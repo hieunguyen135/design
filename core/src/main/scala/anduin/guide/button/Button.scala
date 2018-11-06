@@ -45,16 +45,21 @@ object Button {
   case class ColorPart(color: TagMod = TagMod.empty, bg: TagMod, selectedBg: TagMod) {
     def getBg(isSelected: Boolean): TagMod = if (isSelected) selectedBg else bg
   }
-  abstract class Color(border: TagMod, light: ColorPart, heavy: ColorPart) {
+  abstract class Color(light: ColorPart, heavy: ColorPart) {
     def getMods(style: Style, isDisabled: Boolean, isSelected: Boolean): TagMod = {
       if (isDisabled) {
-        SStyle.color.gray5.borderColor.gray3.backgroundColor.gray1
+        TagMod(
+          SStyle.color.gray5.borderColor.gray3,
+          style match {
+            case Style.Link => TagMod.empty
+            case _          => SStyle.backgroundColor.gray1
+          }
+        )
       } else {
         style match {
-          case Style.Link    => this.light.color
-          case Style.Minimal => TagMod(this.light.color, this.light.getBg(isSelected))
-          case Style.Ghost   => TagMod(this.border, this.light.color, this.light.getBg(isSelected))
-          case Style.Full    => TagMod(this.border, this.heavy.color, this.heavy.getBg(isSelected))
+          case Style.Link                  => this.light.color
+          case Style.Minimal | Style.Ghost => TagMod(this.light.color, this.light.getBg(isSelected))
+          case Style.Full                  => TagMod(this.heavy.color, this.heavy.getBg(isSelected))
         }
       }
     }
@@ -62,81 +67,80 @@ object Button {
   object Color {
     case object White
         extends Color(
-          border = SStyle.borderColor.gray4,
           light = ColorPart(
-            color = SStyle.color.white,
+            color = SStyle.color.white.borderColor.gray6,
             bg = SStyle.hover.backgroundGray7.active.backgroundGray6,
             selectedBg = SStyle.backgroundColor.gray6
           ),
           heavy = ColorPart(
-            color = SStyle.color.gray8.shadow.blur1Light,
+            color = SStyle.color.gray8.borderColor.gray4.shadow.blur1Light,
             bg = SStyle.backgroundColor.gray1.hover.backgroundWhite.active.backgroundGray2,
             selectedBg = SStyle.backgroundColor.gray2
           )
         )
-    abstract class ColorNonWhite(border: TagMod, light: ColorPart, heavy: ColorPart)
-        extends Color(border, light, heavy.copy(color = SStyle.color.white.shadow.blur1Dark))
+    abstract class ColorNonWhite(light: ColorPart, heavy: ColorPart)
+        extends Color(light, heavy.copy(color = TagMod(heavy.color, SStyle.color.white.shadow.blur1Dark)))
     case object Black
         extends ColorNonWhite(
-          border = SStyle.borderColor.gray8,
           light = ColorPart(
-            color = SStyle.color.gray8,
+            color = SStyle.borderColor.gray5.color.gray8,
             bg = SStyle.hover.backgroundGray3.active.backgroundGray4,
             selectedBg = SStyle.backgroundColor.gray4
           ),
           heavy = ColorPart(
+            color = SStyle.borderColor.gray8,
             bg = SStyle.backgroundColor.gray7.hover.backgroundGray6.active.backgroundGray8,
             selectedBg = SStyle.backgroundColor.gray8
           )
         )
     case object Red
         extends ColorNonWhite(
-          border = SStyle.borderColor.danger5,
           light = ColorPart(
-            color = SStyle.color.danger4,
+            color = SStyle.borderColor.danger5.color.danger4,
             bg = SStyle.hover.backgroundDanger1.active.backgroundDanger2,
             selectedBg = SStyle.backgroundColor.danger2
           ),
           heavy = ColorPart(
+            color = SStyle.borderColor.danger5,
             bg = SStyle.backgroundColor.danger4.hover.backgroundDanger3.active.backgroundDanger5,
             selectedBg = SStyle.backgroundColor.danger5
           )
         )
     case object Orange
         extends ColorNonWhite(
-          border = SStyle.borderColor.warning5,
           light = ColorPart(
-            color = SStyle.color.warning4,
+            color = SStyle.borderColor.warning5.color.warning4,
             bg = SStyle.hover.backgroundWarning1.active.backgroundWarning2,
             selectedBg = SStyle.backgroundColor.warning2
           ),
           heavy = ColorPart(
+            color = SStyle.borderColor.warning5,
             bg = SStyle.backgroundColor.warning4.hover.backgroundWarning3.active.backgroundWarning5,
             selectedBg = SStyle.backgroundColor.warning5
           )
         )
     case object Green
         extends ColorNonWhite(
-          border = SStyle.borderColor.success5,
           light = ColorPart(
-            color = SStyle.color.success4,
+            color = SStyle.borderColor.success5.color.success4,
             bg = SStyle.hover.backgroundSuccess1.active.backgroundSuccess2,
             selectedBg = SStyle.backgroundColor.success2
           ),
           heavy = ColorPart(
+            color = SStyle.borderColor.success5,
             bg = SStyle.backgroundColor.success4.hover.backgroundSuccess3.active.backgroundSuccess5,
             selectedBg = SStyle.backgroundColor.success5
           )
         )
     case object Blue
         extends ColorNonWhite(
-          border = SStyle.borderColor.primary5,
           light = ColorPart(
-            color = SStyle.color.primary4,
+            color = SStyle.borderColor.primary5.color.primary4,
             bg = SStyle.hover.backgroundPrimary1.active.backgroundPrimary2,
             selectedBg = SStyle.backgroundColor.primary2
           ),
           heavy = ColorPart(
+            color = SStyle.borderColor.primary5,
             bg = SStyle.backgroundColor.primary4.hover.backgroundPrimary3.active.backgroundPrimary5,
             selectedBg = SStyle.backgroundColor.primary5
           )
