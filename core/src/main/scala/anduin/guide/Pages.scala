@@ -26,6 +26,7 @@ object Pages {
   case class Button(hash: String = "") extends ButtonT
   case class ButtonStyle(hash: String = "") extends ButtonT
   case class ButtonLink(hash: String = "") extends ButtonT
+  case class ButtonTest(hash: String = "") extends ComponentT
   // - icon
   sealed trait IconT extends ComponentT
   case class Icon(hash: String = "") extends IconT

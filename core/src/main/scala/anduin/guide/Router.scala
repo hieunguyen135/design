@@ -49,6 +49,8 @@ object Router {
         renderR(PageButtonStyle.render)
       | dynamicRouteCT("button-link" ~ hash.caseClass[ButtonLink]) ~>
         renderR(PageButtonLink.render)
+      | dynamicRouteCT("button-test" ~ hash.caseClass[ButtonTest]) ~>
+        renderR(PageButtonTest.render)
 
       | dynamicRouteCT("card" ~ hash.caseClass[Card]) ~>
         renderR(PageCard.render)
