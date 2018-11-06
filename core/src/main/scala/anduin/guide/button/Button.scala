@@ -2,7 +2,9 @@
 
 package anduin.guide.button
 
+import anduin.component.button.ButtonStyle.StyleMinimal
 import anduin.component.icon.Icon
+import anduin.style.{Style => SStyle}
 
 // scalastyle:off underscore.import
 import japgolly.scalajs.react._
@@ -28,30 +30,55 @@ final case class Button(
 
 object Button {
 
-  private abstract class Tpe
+  private abstract class Tpe(private[Button] val mod: TagMod)
+
   object Tpe {
-    private abstract class Input
-    case object Button extends Tpe
-    case object Submit extends Tpe
-    case object Reset extends Tpe
-    case class Link(href: String, target: TagMod) extends Tpe
+    // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a
+    case class Link(href: String, target: TagMod) extends Tpe(TagMod(^.href := href, target))
+    // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attr-type
+    private abstract class ButtonCommon(private[Button] val value: String) extends Tpe(^.tpe := value)
+    case object Button extends ButtonCommon("button")
+    case object Submit extends ButtonCommon("submit")
+    case object Reset extends ButtonCommon("reset")
+  }
 
-    private[Button] def getMod(tpe: Tpe): TagMod = {
 
+  private[Button] abstract class Color(text: TagMod, bg: TagMod, border: TagMod, full: TagMod) {
+    def getMods(style: Style): TagMod = style match {
+      case Style.Link    => this.text
+      case Style.Minimal => TagMod(this.text, this.bg)
+      case Style.Ghost   => TagMod(this.text, this.bg, this.border)
+      case Style.Full    => this.full
     }
   }
 
-  private[button] abstract class Color
   object Color {
-    case object White extends Color
-    case object Black extends Color
-    case object Red extends Color
-    case object Orange extends Color
-    case object Green extends Color
-    case object Blue extends Color
+    case object White
+        extends Color(
+          text = SStyle.color.white,
+          bg = SStyle.hover.backgroundGray7.active.backgroundGray6,
+          border = SStyle.borderColor.gray6,
+          full = SStyle.color.gray8.shadow.blur1Light.backgroundColor.white.hover.backgroundWhite.active.backgroundGray2
+        )
+    private abstract class ColorNonWhite(text: TagMod, bg: TagMod, border: TagMod, fullBg: TagMod)
+        extends Color(text, bg, border, TagMod(SStyle.color.white.shadow.blur1Dark, fullBg))
+    case object Black
+        extends ColorNonWhite(
+          text = SStyle.color.gray8,
+          bg = SStyle.hover.backgroundGray3.active.backgroundGray4,
+          border = SStyle.borderColor.gray4,
+          fullBg = SStyle.backgroundColor.gray7.hover.backgroundGray6.active.backgroundGray8
+        )
+    case object Red
+        extends ColorNonWhite(
+          text = SStyle.color.danger4,
+          bg = SStyle.hover.backgroundDanger1.active.backgroundDanger2,
+          border = SStyle.borderColor.danger4,
+          fullBg = SStyle.backgroundColor.danger4.hover.backgroundDanger3.active.backgroundDanger5
+        )
   }
 
-  private[button] abstract class Style
+  private[Button] abstract class Style
   object Style {
     case object Link extends Style
     private abstract class Button extends Style
