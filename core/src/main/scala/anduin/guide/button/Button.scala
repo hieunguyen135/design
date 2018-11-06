@@ -78,7 +78,7 @@ object Button {
         extends Color(border, light, heavy.copy(color = SStyle.color.white.shadow.blur1Dark))
     case object Black
         extends ColorNonWhite(
-          border = SStyle.borderColor.gray4,
+          border = SStyle.borderColor.gray8,
           light = ColorPart(
             color = SStyle.color.gray8,
             bg = SStyle.hover.backgroundGray3.active.backgroundGray4,
@@ -91,7 +91,7 @@ object Button {
         )
     case object Red
         extends ColorNonWhite(
-          border = SStyle.borderColor.danger4,
+          border = SStyle.borderColor.danger5,
           light = ColorPart(
             color = SStyle.color.danger4,
             bg = SStyle.hover.backgroundDanger1.active.backgroundDanger2,
@@ -104,7 +104,7 @@ object Button {
         )
     case object Orange
         extends ColorNonWhite(
-          border = SStyle.borderColor.warning4,
+          border = SStyle.borderColor.warning5,
           light = ColorPart(
             color = SStyle.color.warning4,
             bg = SStyle.hover.backgroundWarning1.active.backgroundWarning2,
@@ -117,7 +117,7 @@ object Button {
         )
     case object Green
         extends ColorNonWhite(
-          border = SStyle.borderColor.success4,
+          border = SStyle.borderColor.success5,
           light = ColorPart(
             color = SStyle.color.success4,
             bg = SStyle.hover.backgroundSuccess1.active.backgroundSuccess2,
@@ -130,7 +130,7 @@ object Button {
         )
     case object Blue
         extends ColorNonWhite(
-          border = SStyle.borderColor.primary4,
+          border = SStyle.borderColor.primary5,
           light = ColorPart(
             color = SStyle.color.primary4,
             bg = SStyle.hover.backgroundPrimary1.active.backgroundPrimary2,
